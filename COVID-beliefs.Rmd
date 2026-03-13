@@ -6,4 +6,37 @@ date: "2026-03-13"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(dplyr)
+library(readr)
+
+d_COVID <- read.csv('../data/life-under-lockdown-wave2-extract.csv')
 ```
+
+# Hypothesis
+H1 Gender is associated with number of conspiracy beliefs regarding coronavirus
+
+# Findings
+```{r}
+d_COVID %>%
+  group_by(gender) %>%
+  summarise(
+    n = n(),
+    Mdn = median(beliefs),
+    M = mean(beliefs),
+    SD = sd(beliefs)
+  )
+```
+
+```{r}
+d_COVID %>%
+  filter(gender != 'In another way') %>%
+  t.test(
+    beliefs ~ gender,
+    data = .
+  )
+```
+
+In the sample, males held more conspiracy beliefs regarding coronavirus than female, but this was not statistically significant, t(494.31) = -1.201, p = .230.
+
+
